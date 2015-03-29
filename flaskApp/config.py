@@ -9,6 +9,3 @@ app.config['MYSQL_DATABASE_PASSWORD'] = '' # TODO Before putting this online put
 app.config['MYSQL_DATABASE_DB'] = 'pepdb'
 mysql.init_app(app)
 ### END SQL CONFIG ###
-
-WTF_CSRF_ENABLED = True
-SECRET_KEY = 'you-will-never-guess'
