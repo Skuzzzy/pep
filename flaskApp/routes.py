@@ -25,11 +25,10 @@ def addlink():
 def listLinks():
 
     cursor = mysql.connect().cursor()
-    result = cursor.execute("SELECT * from Pair")
+    cursor.execute("SELECT * from Pair")
+    linklist = list(cursor.fetchall())
 
-    list = []
-
-    return render_template('list.html', list=list)
+    return render_template('list.html', list=linklist)
 
 @app.route('/test')
 def test():
