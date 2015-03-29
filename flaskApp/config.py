@@ -9,3 +9,6 @@ app.config['MYSQL_DATABASE_DB'] = 'EmpData'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 ### END SQL CONFIG ###
+
+WTF_CSRF_ENABLED = True
+SECRET_KEY = 'you-will-never-guess'
