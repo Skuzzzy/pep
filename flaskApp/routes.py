@@ -23,17 +23,7 @@ def addlink():
 
 @app.route('/list')
 def listLinks():
-
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from Pair")
     linklist = list(cursor.fetchall())
-
     return render_template('list.html', list=linklist)
-
-@app.route('/test')
-def test():
-    cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from Pair")
-    data = cursor.fetchone()
-    print data
-    return "", 1
