@@ -1,8 +1,9 @@
 from flask import Flask
-from flaskext.mysql import MySQL
 
+app = Flask(__name__)
 
 ### SQL CONFIG ###
+from flaskext.mysql import MySQL
 mysql = MySQL()
 app = Flask(__name__)
 app.config['MYSQL_DATABASE_USER'] = 'root'
@@ -12,15 +13,4 @@ app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 ### END SQL CONFIG ###
 
-### ROUTES ###
-from flask import request
-
-@app.route("/")
-def hello():
-    return "chips!"
-
-### END ROUTES ###
-
-
-if __name__ == "__main__":
-    app.run()
+from flaskApp import routes
