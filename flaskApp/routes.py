@@ -20,6 +20,13 @@ def addlink():
     else:
         return render_template('addlink.html')
 
+@app.route('/list')
+def listLinks():
+    list = [
+        {'name': "Southpark", 'link': "http://i.imgur.com/0Ux0Mqt.jpg"}
+    ]
+    return render_template('list.html', list=list)
+
 @app.route('/test')
 def test():
     cursor = mysql.connect().cursor()
