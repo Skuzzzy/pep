@@ -10,10 +10,12 @@ from flask import request, redirect
 def index():
     return render_template('index.html')
 
-@app.route('/addlink', methods=['GET','POST'])
+@app.route('/addlink', methods=['GET', 'POST'])
 def addlink():
     if request.method == 'POST':
-        print 'chippo'
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        conn.commit()
         return redirect('/')
     else:
         return render_template('addlink.html')
