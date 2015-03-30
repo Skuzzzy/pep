@@ -61,11 +61,6 @@ def upload_file():
     else:
         return render_template('fileupload.html')
 
-# For rendering pictures in future example (src for img can be this)
-@app.route('/test')
-def test():
-    return send_file("static/test.jpg", mimetype='image/gif')
-
 @app.route('/image/<ID>')
 def picture(ID):
     conn = mysql.connect()
@@ -73,7 +68,7 @@ def picture(ID):
     cursor.execute("SELECT * from Pictures where id='" + ID + "'")
     data = cursor.fetchone()
     if data is None:
-        return "", 404
+        return redirect('/')
     else:
         filename = data[3]
         return send_file("static/frogpic/"+filename, mimetype='image/gif')
