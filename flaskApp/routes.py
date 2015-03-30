@@ -27,3 +27,12 @@ def listLinks():
     cursor.execute("SELECT * from Pictures")
     linklist = list(cursor.fetchall())
     return render_template('list.html', list=linklist)
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        f = request.files['frogpic']
+        f.save('frogpic/uploaded_file.txt')
+        return redirect('/')
+    else:
+        return render_template('fileupload.html')

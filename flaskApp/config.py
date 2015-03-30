@@ -9,3 +9,6 @@ app.config['MYSQL_DATABASE_PASSWORD'] = '' # TODO Before putting this online put
 app.config['MYSQL_DATABASE_DB'] = 'pepdb'
 mysql.init_app(app)
 ### END SQL CONFIG ###
+
+UPLOAD_FOLDER = ''
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
