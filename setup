@@ -6,4 +6,6 @@ source venv/bin/activate
 sudo pip install -r flaskApp/requirements.txt
 
 sudo apt-get install mysql-server mysql-client
+sudo apt-get install libmysqlclient-dev
+
 sudo pip install Flask-MySQL
