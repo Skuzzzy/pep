@@ -32,12 +32,10 @@ def listLinks():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from Pictures")
     linklist = list(cursor.fetchall())
-    print len(linklist)
 
     modifiedLinks = []
     for each in linklist:
         modifiedLinks.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
-    print modifiedLinks
 
     return render_template('list.html', list=modifiedLinks)
 
