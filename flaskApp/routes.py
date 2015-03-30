@@ -5,6 +5,8 @@ from config import mysql
 from flask import render_template
 from flask import request, redirect
 
+import datetime
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -31,8 +33,15 @@ def listLinks():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        f = request.files['frogpic']
-        f.save('frogpic/uploaded_file.jpg')
+        ul_file = request.files['frogpic']
+
+        save_file = 'frogpic/' + str(datetime.datetime.now().time()) + '.jpg'
+        ul_file.save(save_file)
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + save_file + "')")
+        conn.commit()
         return redirect('/')
     else:
         return render_template('fileupload.html')
