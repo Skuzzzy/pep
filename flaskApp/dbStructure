@@ -1,0 +1,16 @@
+CREATE DATABASE pepdb;
+USE pepdb;
+
+CREATE TABLE Pictures(
+id INT NOT NULL AUTO_INCREMENT,
+time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+title VARCHAR(100) NOT NULL,
+file_name VARCHAR(100) NOT NULL,
+PRIMARY KEY(id)
+);
+
+mysql> insert into Pictures values('',now(),#TITLE#,#FILE_NAME#);
+
+
+SELECT * from Pictures;
+DROP TABLE Pictures;

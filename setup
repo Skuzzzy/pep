@@ -7,15 +7,3 @@ sudo pip install -r flaskApp/requirements.txt
 
 sudo apt-get install mysql-server mysql-client
 sudo pip install Flask-MySQL
-
-CREATE DATABASE dbname;
-USE dbname;
-CREATE TABLE Pair(
-ID INT NOT NULL AUTO_INCREMENT,
-sone VARCHAR(100) NOT NULL,
-stwo VARCHAR(100) NOT NULL,
-PRIMARY KEY(ID)
-);
-DROP TABLE Pair;
-
-SELECT * from Pair;
