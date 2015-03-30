@@ -28,19 +28,29 @@ def listLinks():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from Pictures")
     linklist = list(cursor.fetchall())
-    return render_template('list.html', list=linklist)
 
+    modifiedLinks = []
+    for each in linklist:
+        modifiedLinks.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
+    print modifiedLinks
+
+    return render_template('list.html', list=modifiedLinks)
+
+
+import os
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         ul_file = request.files['frogpic']
 
-        save_file = 'static/frogpic/' + str(datetime.datetime.now().time()) + '.jpg'
+        nowstr = str(datetime.datetime.now().time())
+        fileExtension = ul_file.filename.split(".")[-1]
+        save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + nowstr + '.' + fileExtension
         ul_file.save(save_file)
 
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + save_file + "')")
+        cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + nowstr + '.' + fileExtension + "')")
         conn.commit()
         return redirect('/')
     else:
