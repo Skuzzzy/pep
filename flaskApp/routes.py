@@ -15,7 +15,7 @@ def addlink():
     if request.method == 'POST':
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("insert into Pair values ('','" + request.form['name'] + "','" + request.form['link'] + "')")
+        cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + request.form['link'] + "')")
         conn.commit()
         return redirect('/')
     else:
@@ -24,6 +24,6 @@ def addlink():
 @app.route('/list')
 def listLinks():
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from Pair")
+    cursor.execute("SELECT * from Pictures")
     linklist = list(cursor.fetchall())
     return render_template('list.html', list=linklist)
