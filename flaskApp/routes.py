@@ -3,7 +3,7 @@ from flaskApp import app
 from config import mysql
 
 from flask import render_template
-from flask import request, redirect
+from flask import request, redirect, send_file
 
 import datetime
 
@@ -35,7 +35,7 @@ def upload_file():
     if request.method == 'POST':
         ul_file = request.files['frogpic']
 
-        save_file = 'frogpic/' + str(datetime.datetime.now().time()) + '.jpg'
+        save_file = 'static/frogpic/' + str(datetime.datetime.now().time()) + '.jpg'
         ul_file.save(save_file)
 
         conn = mysql.connect()
@@ -45,3 +45,8 @@ def upload_file():
         return redirect('/')
     else:
         return render_template('fileupload.html')
+
+
+@app.route('/test')
+def test():
+    return send_file("static/test.jpg", mimetype='image/gif')
