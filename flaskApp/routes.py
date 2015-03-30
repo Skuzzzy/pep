@@ -32,7 +32,7 @@ def listLinks():
 def upload_file():
     if request.method == 'POST':
         f = request.files['frogpic']
-        f.save('frogpic/uploaded_file.txt')
+        f.save('frogpic/uploaded_file.jpg')
         return redirect('/')
     else:
         return render_template('fileupload.html')
