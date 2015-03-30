@@ -1,12 +1,27 @@
 CREATE DATABASE pepdb;
 USE pepdb;
 
+# CHANGE id to item_id
+
 CREATE TABLE Pictures(
 id INT NOT NULL AUTO_INCREMENT,
 time_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 title VARCHAR(100) NOT NULL,
 file_name VARCHAR(100) NOT NULL,
 PRIMARY KEY(id)
+);
+
+CREATE TABLE Tags(
+tag_id INT NOT NULL AUTO_INCREMENT,
+tag_title VARCHAR(100) NOT NULL,
+PRIMARY KEY(tag_id)
+);
+
+CREATE TABLE PictureTags(
+insertion_id INT NOT NULL AUTO_INCREMENT,
+item_id INT NOT NULL,
+tag_id VARCHAR(100) NOT NULL,
+PRIMARY KEY(insertion_id)
 );
 
 mysql> insert into Pictures values('',now(),#TITLE#,#FILE_NAME#);

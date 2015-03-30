@@ -51,10 +51,39 @@ def upload_file():
         save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + nowstr + '.' + fileExtension
         ul_file.save(save_file)
 
+        # Insert into pictures
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + nowstr + '.' + fileExtension + "')")
         conn.commit()
+
+        # TODO RETAIN INSERTION ID FOR TAGGING
+        # picture_id
+
+        # Associate tags
+        tagtokens = request.form['tags'].split(",") # Get tags from post
+
+        # TODO GET TAG ID ASSOCIATED WITH TAG STRING (LOWERCASE ONLY)
+        # tag_ids (This will be an array of integers
+        tag_ids = []
+        for tag in tagtokens:
+            1+1
+            # We need to go from string -> int (tagname -> tagid)
+
+
+        # todo move all sql connections to one session
+        conn = mysql.connect()
+        cursor = conn.cursor()
+
+        # TODO REMOVE PLACEHOLDERS
+        picture_id = -1
+
+        for tag_id in tag_ids:
+            cursor.execute("insert into PictureTags values ('',"+str(picture_id)+","+str(tag_id)+")")
+
+        conn.commit()
+
+
         return redirect('/')
     else:
         return render_template('fileupload.html')
