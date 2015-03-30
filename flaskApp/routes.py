@@ -65,3 +65,18 @@ def upload_file():
 @app.route('/test')
 def test():
     return send_file("static/test.jpg", mimetype='image/gif')
+
+@app.route('/image/<ID>')
+def picture(ID):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from Pictures where id='" + ID + "'")
+    data = cursor.fetchone()
+    if data is None:
+        return "", 404
+    else:
+        filename = data[3]
+        return send_file("static/frogpic/"+filename, mimetype='image/gif')
+
+
+
