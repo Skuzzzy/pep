@@ -12,6 +12,7 @@ import datetime
 def index():
     return render_template('index.html')
 
+# TODO remove addlink route as it is obsoleted by upload route
 @app.route('/addlink', methods=['GET', 'POST'])
 def addlink():
     if request.method == 'POST':
