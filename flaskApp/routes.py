@@ -6,12 +6,14 @@ from flask import render_template
 from flask import request, redirect, send_file
 
 import datetime
+import os
 
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html')
 
+'''
 # TODO remove addlink route as it is obsoleted by upload route
 @app.route('/addlink', methods=['GET', 'POST'])
 def addlink():
@@ -23,12 +25,14 @@ def addlink():
         return redirect('/')
     else:
         return render_template('addlink.html')
+'''
 
 @app.route('/list')
 def listLinks():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from Pictures")
     linklist = list(cursor.fetchall())
+    print len(linklist)
 
     modifiedLinks = []
     for each in linklist:
@@ -38,7 +42,7 @@ def listLinks():
     return render_template('list.html', list=modifiedLinks)
 
 
-import os
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -57,7 +61,7 @@ def upload_file():
     else:
         return render_template('fileupload.html')
 
-
+# For rendering pictures in future example (src for img can be this)
 @app.route('/test')
 def test():
     return send_file("static/test.jpg", mimetype='image/gif')
