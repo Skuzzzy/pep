@@ -58,6 +58,13 @@ def upload_file():
         conn.commit()
 
         # TODO RETAIN INSERTION ID FOR TAGGING
+        current = cursor.fetchone()
+        print current[0]
+        print current[0]
+        print current[0]
+        print current[0]
+        print current[0]
+
         # picture_id
 
         # Associate tags

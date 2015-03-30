@@ -10,5 +10,7 @@ app.config['MYSQL_DATABASE_DB'] = 'pepdb'
 mysql.init_app(app)
 ### END SQL CONFIG ###
 
+
+# TODO Actually use these configs
 UPLOAD_FOLDER = ''
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
