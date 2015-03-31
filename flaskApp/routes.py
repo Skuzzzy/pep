@@ -57,7 +57,6 @@ def upload_file():
             tagInDB = cursor.fetchone()
             if cursor.rowcount == 0: # If this tag doesn't exist in the database insert it
                 cursor.execute("INSERT INTO Tags (tag_title) VALUES ('"+ str(low_tag) +"')")
-
                 cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
                 tagInDB = cursor.fetchone()
             tag_ids.append(tagInDB)
