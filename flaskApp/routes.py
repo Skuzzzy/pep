@@ -2,6 +2,8 @@ from flaskApp import app
 
 from config import mysql
 
+import my_sql_util
+
 from flask import render_template
 from flask import request, redirect, send_file
 
@@ -14,16 +16,16 @@ def index():
     return render_template('index.html')
 
 @app.route('/list')
-def listLinks():
+def list_links():
     cursor = mysql.connect().cursor()
     cursor.execute("SELECT * from Pictures")
-    linklist = list(cursor.fetchall())
+    link_list = list(cursor.fetchall())
 
-    modifiedLinks = []
-    for each in linklist:
-        modifiedLinks.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
+    modified_links = []
+    for each in link_list:
+        modified_links.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
 
-    return render_template('list.html', list=modifiedLinks)
+    return render_template('list.html', list=modified_links)
 
 
 
@@ -33,17 +35,20 @@ def upload_file():
         ul_file = request.files['frogpic']
 
         nowstr = str(datetime.datetime.now().time())
-        fileExtension = ul_file.filename.split(".")[-1]
-        save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + nowstr + '.' + fileExtension
+        file_extension = ul_file.filename.split(".")[-1]
+
+        full_filename = nowstr + '.' + file_extension
+
+        save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + full_filename
         ul_file.save(save_file)
 
         # Insert into pictures
         conn = mysql.connect()
         cursor = conn.cursor()
 
-        cursor.execute("INSERT INTO Pictures (time_created, title, file_name) VALUES (now(), '"+ request.form['name'] +"','"+ nowstr + '.' + fileExtension +"')")
+        cursor.execute("INSERT INTO Pictures (time_created, title, file_name) VALUES (now(), '"+ request.form['name'] +"','"+ full_filename +"')")
 
-        cursor.execute("SELECT id from Pictures where title='" + request.form['name'] + "' AND file_name='"+ nowstr + '.' + fileExtension + "'")
+        cursor.execute("SELECT id from Pictures where title='" + request.form['name'] + "' AND file_name='"+ full_filename + "'")
         current = cursor.fetchone()
         picture_id = current[0]
 
@@ -69,28 +74,17 @@ def upload_file():
     else:
         return render_template('fileupload.html')
 
-@app.route('/image/<ID>')
-def picture(ID):
-    getStringTagsFromID(ID)
-
+@app.route('/image/<picture_id>')
+def picture(picture_id):
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT * from Pictures where id='" + ID + "'")
+    cursor.execute("SELECT * from Pictures where id='" + picture_id + "'")
     data = cursor.fetchone()
     if data is None:
         return redirect('/')
     else:
         filename = data[3]
         return send_file("static/frogpic/"+filename, mimetype='image/gif')
-
-def getStringTagsFromID(ID):
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    #cursor.execute("SELECT * from Pictures where id='" + ID + "'")
-    cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id")
-    # SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.item_id
-    querylist = list(cursor.fetchall())
-    print querylist
 
 
 
