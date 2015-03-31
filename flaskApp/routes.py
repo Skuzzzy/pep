@@ -11,6 +11,7 @@ import os
 @app.route('/')
 @app.route('/index')
 def index():
+
     return render_template('index.html')
 
 '''
@@ -55,42 +56,33 @@ def upload_file():
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + nowstr + '.' + fileExtension + "')")
-        conn.commit()
 
-        # TODO RETAIN INSERTION ID FOR TAGGING
+        cursor.execute("SELECT id from Pictures where title='" + request.form['name'] + "' AND file_name='"+ nowstr + '.' + fileExtension + "'")
         current = cursor.fetchone()
-        print current[0]
-        print current[0]
-        print current[0]
-        print current[0]
-        print current[0]
-
-        # picture_id
+        picture_id = current[0]
 
         # Associate tags
         tagtokens = request.form['tags'].split(",") # Get tags from post
 
         # TODO GET TAG ID ASSOCIATED WITH TAG STRING (LOWERCASE ONLY)
-        # tag_ids (This will be an array of integers
         tag_ids = []
         for tag in tagtokens:
-            1+1
-            # We need to go from string -> int (tagname -> tagid)
+            low_tag = tag.lower()
+            cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
+            tagInDB = cursor.fetchone()
+            if cursor.rowcount == 0: # If this tag doesn't exist in the database insert it
+                print low_tag
+                cursor.execute("insert into Tags values ('','"+str(low_tag)+"')")
+                cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
+                tagInDB = cursor.fetchone()
+            tag_ids.append(tagInDB)
 
-
-        # todo move all sql connections to one session
-        conn = mysql.connect()
-        cursor = conn.cursor()
-
-        # TODO REMOVE PLACEHOLDERS
-        picture_id = -1
+        print tag_ids
 
         for tag_id in tag_ids:
-            cursor.execute("insert into PictureTags values ('',"+str(picture_id)+","+str(tag_id)+")")
+            cursor.execute("insert into PictureTags values ('','"+str(picture_id)+"','"+str(tag_id[0])+"')")
 
         conn.commit()
-
-
         return redirect('/')
     else:
         return render_template('fileupload.html')
