@@ -11,22 +11,7 @@ import os
 @app.route('/')
 @app.route('/index')
 def index():
-
     return render_template('index.html')
-
-'''
-# TODO remove addlink route as it is obsoleted by upload route
-@app.route('/addlink', methods=['GET', 'POST'])
-def addlink():
-    if request.method == 'POST':
-        conn = mysql.connect()
-        cursor = conn.cursor()
-        cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + request.form['link'] + "')")
-        conn.commit()
-        return redirect('/')
-    else:
-        return render_template('addlink.html')
-'''
 
 @app.route('/list')
 def listLinks():
@@ -64,20 +49,16 @@ def upload_file():
         # Associate tags
         tagtokens = request.form['tags'].split(",") # Get tags from post
 
-        # TODO GET TAG ID ASSOCIATED WITH TAG STRING (LOWERCASE ONLY)
         tag_ids = []
         for tag in tagtokens:
             low_tag = tag.lower()
             cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
             tagInDB = cursor.fetchone()
             if cursor.rowcount == 0: # If this tag doesn't exist in the database insert it
-                print low_tag
                 cursor.execute("insert into Tags values ('','"+str(low_tag)+"')")
                 cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
                 tagInDB = cursor.fetchone()
             tag_ids.append(tagInDB)
-
-        print tag_ids
 
         for tag_id in tag_ids:
             cursor.execute("insert into PictureTags values ('','"+str(picture_id)+"','"+str(tag_id[0])+"')")
