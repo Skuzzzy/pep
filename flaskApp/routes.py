@@ -71,6 +71,8 @@ def upload_file():
 
 @app.route('/image/<ID>')
 def picture(ID):
+    getStringTagsFromID(ID)
+
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute("SELECT * from Pictures where id='" + ID + "'")
@@ -80,6 +82,15 @@ def picture(ID):
     else:
         filename = data[3]
         return send_file("static/frogpic/"+filename, mimetype='image/gif')
+
+def getStringTagsFromID(ID):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    #cursor.execute("SELECT * from Pictures where id='" + ID + "'")
+    cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id")
+    # SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.item_id
+    querylist = list(cursor.fetchall())
+    print querylist
 
 
 
