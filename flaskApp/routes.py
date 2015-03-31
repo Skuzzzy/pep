@@ -40,7 +40,8 @@ def upload_file():
         # Insert into pictures
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("insert into Pictures values ('',now(),'" + request.form['name'] + "','" + nowstr + '.' + fileExtension + "')")
+
+        cursor.execute("INSERT INTO Pictures (time_created, title, file_name) VALUES (now(), '"+ request.form['name'] +"','"+ nowstr + '.' + fileExtension +"')")
 
         cursor.execute("SELECT id from Pictures where title='" + request.form['name'] + "' AND file_name='"+ nowstr + '.' + fileExtension + "'")
         current = cursor.fetchone()
@@ -55,13 +56,14 @@ def upload_file():
             cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
             tagInDB = cursor.fetchone()
             if cursor.rowcount == 0: # If this tag doesn't exist in the database insert it
-                cursor.execute("insert into Tags values ('','"+str(low_tag)+"')")
+                cursor.execute("INSERT INTO Tags (tag_title) VALUES ('"+ str(low_tag) +"')")
+
                 cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
                 tagInDB = cursor.fetchone()
             tag_ids.append(tagInDB)
 
         for tag_id in tag_ids:
-            cursor.execute("insert into PictureTags values ('','"+str(picture_id)+"','"+str(tag_id[0])+"')")
+            cursor.execute("INSERT INTO PictureTags (item_id, tag_id) VALUES ('" + str(picture_id)+"','" + str(tag_id[0]) + "')")
 
         conn.commit()
         return redirect('/')
