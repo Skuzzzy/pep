@@ -27,8 +27,6 @@ def list_links():
 
     return render_template('list.html', list=modified_links)
 
-
-
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -53,10 +51,10 @@ def upload_file():
         picture_id = current[0]
 
         # Associate tags
-        tagtokens = request.form['tags'].split(",") # Get tags from post
+        tag_tokens = request.form['tags'].split(",") # Get tags from post
 
         tag_ids = []
-        for tag in tagtokens:
+        for tag in tag_tokens:
             low_tag = tag.lower()
             cursor.execute("SELECT tag_id from Tags where tag_title='" + low_tag + "'")
             tagInDB = cursor.fetchone()
