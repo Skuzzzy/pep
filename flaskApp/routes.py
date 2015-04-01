@@ -19,8 +19,7 @@ def index():
 def list_links():
     modified_links = my_sql_util.get_picture_table_information()
     for each in modified_links:
-        each.append(my_sql_util.get_tag_string_for_picture(each[0]))
-
+        each.append(my_sql_util.get_tag_string_for_picture(each[0])) # each[0] is the picture_id
     print modified_links
 
     return render_template('list.html', list=modified_links)
@@ -72,11 +71,7 @@ def upload_file():
 
 @app.route('/image/<picture_id>')
 def picture(picture_id):
-    conn = mysql.connect()
-    escaped_picture_id = conn.escape_string(str(picture_id))
-    cursor = conn.cursor()
-    cursor.execute("SELECT * from Pictures where id='" + escaped_picture_id + "'")
-    data = cursor.fetchone()
+    data = my_sql_util.get_picture_from_id(picture_id)
     if data is None:
         return redirect('/')
     else:

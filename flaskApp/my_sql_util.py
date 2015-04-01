@@ -20,6 +20,14 @@ def get_picture_table_information():
         modified_links.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
     return modified_links
 
+def get_picture_from_id(picture_id):
+    conn = mysql.connect()
+    escaped_picture_id = conn.escape_string(str(picture_id))
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from Pictures where id='" + escaped_picture_id + "'")
+    data = cursor.fetchone()
+    return data
+
 def getPicIDsFromTagID(tag_id):
     conn = mysql.connect()
     cursor = conn.cursor()
