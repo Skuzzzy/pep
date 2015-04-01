@@ -18,11 +18,8 @@ def index():
 @app.route('/list')
 def list_links():
     modified_links = my_sql_util.get_picture_table_information()
-    #modified_links = my_sql_util.get_last_n_pictures_created(1)
     for each in modified_links:
         each.append(my_sql_util.get_tag_string_for_picture(each[0])) # each[0] is the picture_id
-    print modified_links
-
     return render_template('list.html', list=modified_links)
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -30,14 +27,7 @@ def upload_file():
     if request.method == 'POST':
         ul_file = request.files['frogpic']
 
-        nowstr = str(datetime.datetime.now().time())
-        file_extension = ul_file.filename.split(".")[-1]
-
-        full_filename = nowstr + '.' + file_extension
-
-        save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + full_filename
-        ul_file.save(save_file)
-
+        full_name = save_file_and_get_name(ul_file)
         # Insert into pictures
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -78,6 +68,14 @@ def picture(picture_id):
     else:
         filename = data[3]
         return send_file("static/frogpic/"+filename, mimetype='image/gif')
+
+def save_file_and_get_name(ul_file):
+    now_str = str(datetime.datetime.now().time())
+    file_extension = ul_file.filename.split(".")[-1]
+    full_filename = now_str + '.' + file_extension
+    save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + full_filename
+    ul_file.save(save_file)
+    return full_filename
 
 
 

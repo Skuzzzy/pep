@@ -39,7 +39,7 @@ def get_picture_from_id(picture_id):
     data = cursor.fetchone()
     return data
 
-def getPicIDsFromTagID(tag_id):
+def get_picture_ids_associated_with_tag(tag_id):
     conn = mysql.connect()
     cursor = conn.cursor()
     #cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id")
