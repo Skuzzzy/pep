@@ -28,17 +28,13 @@ def upload_file():
 
         full_filename = file_util.save_file_and_get_name(ul_file)
         # Insert into pictures
-        conn = mysql.connect()
-        cursor = conn.cursor()
-
-        cursor.execute("INSERT INTO Pictures (time_created, title, file_name) VALUES (now(), '"+ request.form['name'] +"','"+ full_filename +"')")
-
-        cursor.execute("SELECT id from Pictures where title='" + request.form['name'] + "' AND file_name='"+ full_filename + "'")
-        current = cursor.fetchone()
-        picture_id = current[0]
+        picture_id = my_sql_util.create_picture_entry_and_get_id(request.form['name'],full_filename)
 
         # Associate tags
         tag_tokens = request.form['tags'].split(",") # Get tags from post
+
+        conn = mysql.connect()
+        cursor = conn.cursor()
 
         tag_ids = []
         for tag in tag_tokens:

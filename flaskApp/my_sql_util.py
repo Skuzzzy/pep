@@ -39,6 +39,17 @@ def get_picture_from_id(picture_id):
     data = cursor.fetchone()
     return data
 
+def create_picture_entry_and_get_id(title,full_filename):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO Pictures (time_created, title, file_name) VALUES (now(), '"+ title +"','"+ full_filename +"')")
+    conn.commit()
+    cursor.execute("SELECT id from Pictures where title='" + title + "' AND file_name='"+ full_filename + "'")
+    current = cursor.fetchone()
+
+    picture_id = current[0]
+    return picture_id
+
 def get_picture_ids_associated_with_tag(tag_id):
     conn = mysql.connect()
     cursor = conn.cursor()
