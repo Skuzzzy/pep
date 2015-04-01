@@ -67,7 +67,8 @@ def associate_picture_and_tag(picture_id, tag_id):
     conn.commit()
 
 
-def what():
+def what(tag_list):
+
     conn = mysql.connect()
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM Pictures INNER JOIN PictureTags ON Pictures.id=PictureTags.item_id INNER JOIN Tags ON PictureTags.tag_id=Tags.tag_id")
@@ -75,11 +76,10 @@ def what():
 '''
 2 components
 Joining the correct tables
-
-cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id WHERE PictureTags.item_id="+escaped_picture_id+"")
-
 THIS
 SELECT * FROM Pictures INNER JOIN PictureTags ON Pictures.id=PictureTags.item_id INNER JOIN Tags ON PictureTags.tag_id=Tags.tag_id
+COMPLETE
 
 Building the WHERE clause
+TODO
 '''
