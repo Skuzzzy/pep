@@ -27,7 +27,7 @@ def upload_file():
     if request.method == 'POST':
         ul_file = request.files['frogpic']
 
-        full_name = save_file_and_get_name(ul_file)
+        full_filename = save_file_and_get_name(ul_file)
         # Insert into pictures
         conn = mysql.connect()
         cursor = conn.cursor()
