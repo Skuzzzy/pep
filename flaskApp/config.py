@@ -12,5 +12,5 @@ mysql.init_app(app)
 
 
 # TODO Actually use these configs
-UPLOAD_FOLDER = ''
+UPLOAD_FOLDER = "../static/frogpic/"
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])

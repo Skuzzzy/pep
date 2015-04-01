@@ -1,4 +1,6 @@
 from config import mysql
+from config import UPLOAD_FOLDER
+
 
 def get_tag_string_for_picture(picture_id):
     conn = mysql.connect()
@@ -13,11 +15,11 @@ def get_tag_string_for_picture(picture_id):
 
 def get_picture_table_information():
     cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from Pictures")
+    cursor.execute("SELECT * from Pictures ORDER BY time_created DESC") # Currently showing the last uploaded picture as first
     link_list = list(cursor.fetchall())
     modified_links = []
     for each in link_list:
-        modified_links.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
+        modified_links.append([each[0], each[1], each[2], UPLOAD_FOLDER+each[3]])
     return modified_links
 
 def get_last_n_pictures_created(n):
@@ -28,7 +30,7 @@ def get_last_n_pictures_created(n):
     link_list = list(cursor.fetchall())
     modified_links = []
     for each in link_list:
-        modified_links.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
+        modified_links.append([each[0], each[1], each[2], UPLOAD_FOLDER+each[3]])
     return modified_links
 
 def get_picture_from_id(picture_id):
@@ -49,6 +51,13 @@ def create_picture_entry_and_get_id(title,full_filename):
 
     picture_id = current[0]
     return picture_id
+
+def associate_picture_and_tag(picture_id, tag_id):
+    conn = mysql.connect()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO PictureTags (item_id, tag_id) VALUES ('" + str(picture_id)+"','" + str(tag_id) + "')")
+    conn.commit()
+
 
 def get_picture_ids_associated_with_tag(tag_id):
     conn = mysql.connect()

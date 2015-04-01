@@ -48,7 +48,7 @@ def upload_file():
             tag_ids.append(tagInDB)
 
         for tag_id in tag_ids:
-            cursor.execute("INSERT INTO PictureTags (item_id, tag_id) VALUES ('" + str(picture_id)+"','" + str(tag_id[0]) + "')")
+            my_sql_util.associate_picture_and_tag(picture_id,tag_id[0])
 
         conn.commit()
         return redirect('/')
