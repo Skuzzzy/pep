@@ -18,6 +18,7 @@ def index():
 @app.route('/list')
 def list_links():
     modified_links = my_sql_util.get_picture_table_information()
+    #modified_links = my_sql_util.get_last_n_pictures_created(1)
     for each in modified_links:
         each.append(my_sql_util.get_tag_string_for_picture(each[0])) # each[0] is the picture_id
     print modified_links
