@@ -5,11 +5,11 @@ def get_tag_string_for_picture(picture_id):
     escaped_picture_id = conn.escape_string(str(picture_id))
     cursor = conn.cursor()
     cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id WHERE PictureTags.item_id="+escaped_picture_id+"")
-    querylist = list(cursor.fetchall())
-    tagstrings = []
-    for each in querylist:
-        tagstrings += [each[0]]
-    return tagstrings
+    query_list = list(cursor.fetchall())
+    tag_strings = []
+    for each in query_list:
+        tag_strings += [each[0]]
+    return tag_strings
 
 def get_picture_table_information():
     cursor = mysql.connect().cursor()
