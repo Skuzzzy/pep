@@ -17,13 +17,11 @@ def index():
 
 @app.route('/list')
 def list_links():
-    cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from Pictures")
-    link_list = list(cursor.fetchall())
+    modified_links = my_sql_util.get_picture_table_information()
+    for each in modified_links:
+        each.append(my_sql_util.get_tag_string_for_picture(each[0]))
 
-    modified_links = []
-    for each in link_list:
-        modified_links.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
+    print modified_links
 
     return render_template('list.html', list=modified_links)
 
@@ -75,7 +73,7 @@ def upload_file():
 @app.route('/image/<picture_id>')
 def picture(picture_id):
     conn = mysql.connect()
-    escaped_picture_id = conn.escape_string(picture_id)
+    escaped_picture_id = conn.escape_string(str(picture_id))
     cursor = conn.cursor()
     cursor.execute("SELECT * from Pictures where id='" + escaped_picture_id + "'")
     data = cursor.fetchone()

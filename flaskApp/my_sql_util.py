@@ -2,7 +2,7 @@ from config import mysql
 
 def get_tag_string_for_picture(picture_id):
     conn = mysql.connect()
-    escaped_picture_id = conn.escape_string(picture_id)
+    escaped_picture_id = conn.escape_string(str(picture_id))
     cursor = conn.cursor()
     cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id WHERE PictureTags.item_id="+escaped_picture_id+"")
     querylist = list(cursor.fetchall())
@@ -11,7 +11,16 @@ def get_tag_string_for_picture(picture_id):
         tagstrings += [each[0]]
     return tagstrings
 
-def getPicIDsFromTagID(tagID):
+def get_picture_table_information():
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from Pictures")
+    link_list = list(cursor.fetchall())
+    modified_links = []
+    for each in link_list:
+        modified_links.append([each[0], each[1], each[2], "../static/frogpic/"+each[3]])
+    return modified_links
+
+def getPicIDsFromTagID(tag_id):
     conn = mysql.connect()
     cursor = conn.cursor()
     #cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id")
