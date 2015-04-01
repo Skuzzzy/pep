@@ -75,8 +75,9 @@ def upload_file():
 @app.route('/image/<picture_id>')
 def picture(picture_id):
     conn = mysql.connect()
+    escaped_picture_id = conn.escape_string(picture_id)
     cursor = conn.cursor()
-    cursor.execute("SELECT * from Pictures where id='" + picture_id + "'")
+    cursor.execute("SELECT * from Pictures where id='" + escaped_picture_id + "'")
     data = cursor.fetchone()
     if data is None:
         return redirect('/')

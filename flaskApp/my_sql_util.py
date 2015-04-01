@@ -2,8 +2,9 @@ from config import mysql
 
 def get_tag_string_for_picture(picture_id):
     conn = mysql.connect()
+    escaped_picture_id = conn.escape_string(picture_id)
     cursor = conn.cursor()
-    cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id WHERE PictureTags.item_id="+picture_id+"")
+    cursor.execute("SELECT Tags.tag_title FROM Tags INNER JOIN PictureTags ON Tags.tag_id=PictureTags.tag_id WHERE PictureTags.item_id="+escaped_picture_id+"")
     querylist = list(cursor.fetchall())
     tagstrings = []
     for each in querylist:
