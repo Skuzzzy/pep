@@ -7,8 +7,7 @@ import my_sql_util
 from flask import render_template
 from flask import request, redirect, send_file
 
-import datetime
-import os
+import file_util
 
 @app.route('/')
 @app.route('/index')
@@ -27,7 +26,7 @@ def upload_file():
     if request.method == 'POST':
         ul_file = request.files['frogpic']
 
-        full_filename = save_file_and_get_name(ul_file)
+        full_filename = file_util.save_file_and_get_name(ul_file)
         # Insert into pictures
         conn = mysql.connect()
         cursor = conn.cursor()
@@ -68,14 +67,5 @@ def picture(picture_id):
     else:
         filename = data[3]
         return send_file("static/frogpic/"+filename, mimetype='image/gif')
-
-def save_file_and_get_name(ul_file):
-    now_str = str(datetime.datetime.now().time())
-    file_extension = ul_file.filename.split(".")[-1]
-    full_filename = now_str + '.' + file_extension
-    save_file = os.path.dirname(os.path.realpath(__file__)) + '/static/frogpic/' + full_filename
-    ul_file.save(save_file)
-    return full_filename
-
 
 
