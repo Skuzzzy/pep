@@ -21,6 +21,14 @@ def list_links():
         each.append(my_sql_util.get_tag_string_for_picture(each[0])) # each[0] is the picture_id
     return render_template('list.html', list=modified_links)
 
+@app.route('/list/<tags>')
+def list_links_with_tag(tags):
+
+    low_tag_array = [x.lower() for x in tags.split(",")]
+    modified_links = my_sql_util.what(low_tag_array)
+    print modified_links
+    return render_template('list.html', list=modified_links)
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':

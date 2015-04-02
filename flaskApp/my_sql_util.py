@@ -20,9 +20,7 @@ def get_picture_table_information():
     link_list = list(cursor.fetchall())
     modified_links = []
     for each in link_list:
-        modified_links.append([each[0], each[1], each[2], UPLOAD_FOLDER+each[3]])
-
-    # what(["g1"])
+        modified_links.append([each[0], each[1], each[2], UPLOAD_FOLDER+each[3]]) # Todo change this to an image render route
 
     return modified_links
 
@@ -71,7 +69,7 @@ def what(tag_list):
     conn = mysql.connect()
     cursor = conn.cursor()
 
-    query = "SELECT * FROM Pictures INNER JOIN PictureTags ON Pictures.id=PictureTags.item_id INNER JOIN Tags ON PictureTags.tag_id=Tags.tag_id"
+    query = "SELECT Pictures.id, Pictures.time_created, Pictures.title, Pictures.file_name FROM Pictures INNER JOIN PictureTags ON Pictures.id=PictureTags.item_id INNER JOIN Tags ON PictureTags.tag_id=Tags.tag_id"
     append_string = ""
 
     if len(tag_list) > 0:
@@ -86,8 +84,12 @@ def what(tag_list):
 
     print query + append_string
     cursor.execute(query + append_string)
-    print list(cursor.fetchall())
-    return list(cursor.fetchall())
+    link_list = list(cursor.fetchall())
+    modified_links = []
+    for each in link_list:
+        modified_links.append([each[0], each[1], each[2], UPLOAD_FOLDER+each[3]]) # Todo change this to an image render route
+
+    return modified_links
 
 '''
 2 components
