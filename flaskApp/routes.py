@@ -25,7 +25,7 @@ def list_links():
 def list_links_with_tag(tags):
 
     low_tag_array = [x.lower() for x in tags.split(",")]
-    modified_links = my_sql_util.what(low_tag_array)
+    modified_links = my_sql_util.get_picture_table_information_by_tags(low_tag_array)
     print modified_links
     return render_template('list.html', list=modified_links)
 

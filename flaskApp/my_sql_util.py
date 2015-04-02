@@ -64,7 +64,7 @@ def associate_picture_and_tag(picture_id, tag_id):
     cursor.execute("INSERT INTO PictureTags (item_id, tag_id) VALUES ('" + str(picture_id)+"','" + str(tag_id) + "')")
     conn.commit()
 
-def what(tag_list):
+def get_picture_table_information_by_tags(tag_list):
 
     conn = mysql.connect()
     cursor = conn.cursor()
