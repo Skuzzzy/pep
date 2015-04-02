@@ -22,7 +22,7 @@ def get_picture_table_information():
     for each in link_list:
         modified_links.append([each[0], each[1], each[2], UPLOAD_FOLDER+each[3]])
 
-    what()
+    # what(["g1"])
 
     return modified_links
 
@@ -66,13 +66,29 @@ def associate_picture_and_tag(picture_id, tag_id):
     cursor.execute("INSERT INTO PictureTags (item_id, tag_id) VALUES ('" + str(picture_id)+"','" + str(tag_id) + "')")
     conn.commit()
 
-
 def what(tag_list):
 
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM Pictures INNER JOIN PictureTags ON Pictures.id=PictureTags.item_id INNER JOIN Tags ON PictureTags.tag_id=Tags.tag_id")
+
+    query = "SELECT * FROM Pictures INNER JOIN PictureTags ON Pictures.id=PictureTags.item_id INNER JOIN Tags ON PictureTags.tag_id=Tags.tag_id"
+    append_string = ""
+
+    if len(tag_list) > 0:
+        append_string = " WHERE "
+
+    for indx, val in enumerate(tag_list):
+        if indx != 0:
+            append_string += "OR "
+        append_string += "Tags.tag_title='"+val.lower()+"' "
+
+    append_string += " GROUP BY Pictures.id"
+
+    print query + append_string
+    cursor.execute(query + append_string)
     print list(cursor.fetchall())
+    return list(cursor.fetchall())
+
 '''
 2 components
 Joining the correct tables
